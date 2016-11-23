@@ -34,10 +34,7 @@ public class MainMenuPage : MonoBehaviour
         Application.OpenURL(url);
     }
      
-    public void Back()
-    {
-        SceneManager.LoadScene("Main");
-    } 
+  
 
 
     public void Exit()

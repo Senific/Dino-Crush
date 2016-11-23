@@ -1,40 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelMoves : Level {
+public class LevelMoves : Level
+{
 
-	public int numMoves;
-	public int targetScore;
+    public int numMoves;
+    public int targetScore;
 
-	private int movesUsed = 0;
+    private int movesUsed = 0;
 
-	// Use this for initialization
-	void Start () {
-		type = LevelType.MOVES;
+    // Use this for initialization
+    void Start()
+    {
+        type = LevelType.MOVES;
 
-		hud.SetLevelType (type);
-		hud.SetScore (currentScore);
-		hud.SetTarget (targetScore);
-		hud.SetRemaining (numMoves);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        hud.SetLevelID(levelID);
+        hud.SetLevelType(type); 
+        hud.SetScore(currentScore); 
+        hud.SetMovesRemaining(numMoves);
+    }
 
-	public override void OnMove ()
-	{
-		movesUsed++;
+    // Update is called once per frame
+    void Update()
+    {
 
-		hud.SetRemaining (numMoves - movesUsed);
+    }
 
-		if (numMoves - movesUsed == 0) {
-			if (currentScore >= targetScore) {
-				GameWin ();
-			} else {
-				GameLose ();
-			}
-		}
-	}
+    public override void OnMove()
+    {
+        movesUsed++;
+
+        hud.SetMovesRemaining(numMoves - movesUsed);
+
+        if (numMoves - movesUsed == 0)
+        {
+            if (currentScore >= targetScore)
+            {
+                GameWin();
+            }
+            else
+            {
+                GameLose();
+            }
+        }
+    }
 }

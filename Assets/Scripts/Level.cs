@@ -1,77 +1,91 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Level : MonoBehaviour {
+public class Level : MonoBehaviour
+{
+    public const int NUMBER_OF_LEVELS = 18;
 
-	public enum LevelType
-	{
-		TIMER,
-		OBSTACLE,
-		MOVES,
-	};
 
-	public Grid grid;
-	public HUD hud;
+    public enum LevelType
+    {
+        TIMER,
+        OBSTACLE,
+        MOVES,
+    };
 
-	public int score1Star;
-	public int score2Star;
-	public int score3Star;
+    public int levelID;
 
-	protected LevelType type;
+    public Grid grid;
+    public HUD hud;
 
-	public LevelType Type {
-		get { return type; }
-	}
+    public int score1Star;
+    public int score2Star;
+    public int score3Star;
 
-	protected int currentScore;
+    protected LevelType type;
 
-	protected bool didWin;
+    public LevelType Type
+    {
+        get { return type; }
+    }
 
-	// Use this for initialization
-	void Start () {
-		hud.SetScore (currentScore);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    protected float timer;
+    protected int currentScore;
+    protected int totalMoves; 
 
-	public virtual void GameWin()
-	{
-		grid.GameOver ();
-		didWin = true;
-		StartCoroutine (WaitForGridFill ());
-	}
+    protected bool didWin;
 
-	public virtual void GameLose()
-	{
-		grid.GameOver ();
-		didWin = false;
-		StartCoroutine (WaitForGridFill ());
-	}
+    // Use this for initialization
+    void Start()
+    {
+        hud.SetScore(currentScore);
+    }
 
-	public virtual void OnMove()
-	{
+    // Update is called once per frame
+    public virtual void Update()
+    {
+        timer += Time.deltaTime;
+    }
 
-	}
+    public virtual void GameWin()
+    {
+        grid.GameOver();
+        didWin = true;
+        StartCoroutine(WaitForGridFill());
+    }
 
-	public virtual void OnPieceCleared(GamePiece piece)
-	{
-		currentScore += piece.score;
-		hud.SetScore (currentScore);
-	}
+    public virtual void GameLose()
+    {
+        grid.GameOver();
+        didWin = false;
+        StartCoroutine(WaitForGridFill());
+    }
 
-	protected virtual IEnumerator WaitForGridFill()
-	{
-		while (grid.IsFilling) {
-			yield return 0;
-		}
+    public virtual void OnMove()
+    {
 
-		if (didWin) {
-			hud.OnGameWin (currentScore);
-		} else {
-			hud.OnGameLose ();
-		}
-	}
+    }
+
+    public virtual void OnPieceCleared(GamePiece piece)
+    {
+        currentScore += piece.score;
+        hud.SetScore(currentScore);
+    }
+
+    protected virtual IEnumerator WaitForGridFill()
+    {
+        while (grid.IsFilling)
+        {
+            yield return 0;
+        }
+
+        if (didWin)
+        {
+            hud.OnGameWin(currentScore, timer, totalMoves);
+        }
+        else
+        {
+            hud.OnGameLose();
+        }
+    }
 }

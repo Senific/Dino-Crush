@@ -1,39 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelTimer : Level {
+public class LevelTimer : Level
+{
 
-	public int timeInSeconds;
-	public int targetScore;
+    public int timeInSeconds;
+    public int targetScore;
 
-	private float timer;
-	private bool timeOut = false;
 
-	// Use this for initialization
-	void Start () {
-		type = LevelType.TIMER;
+    private bool timeOut = false;
 
-		hud.SetLevelType (type);
-		hud.SetScore (currentScore);
-		hud.SetTarget (targetScore);
-		hud.SetRemaining (string.Format ("{0}:{1:00}", timeInSeconds / 60, timeInSeconds % 60));
-	}
+    // Use this for initialization
+    void Start()
+    {
+        type = LevelType.TIMER;
 
-	// Update is called once per frame
-	void Update () {
-		if (!timeOut) {
-			timer += Time.deltaTime;
-			hud.SetRemaining (string.Format ("{0}:{1:00}", (int)Mathf.Max((timeInSeconds - timer) / 60, 0), (int)Mathf.Max((timeInSeconds - timer) % 60, 0)));
+        hud.SetLevelType(type);
+        hud.SetScore(currentScore);
+        hud.SetTimeRemaining(timeInSeconds);
+    }
 
-			if (timeInSeconds - timer <= 0) {
-				if (currentScore >= targetScore) {
-					GameWin ();
-				} else {
-					GameLose ();
-				}
+    // Update is called once per frame
+    public override void Update()
+    {
+        base.Update();
 
-				timeOut = true;
-			}
-		}
-	}
+        if (!timeOut)
+        {
+            hud.SetTimeRemaining((int)Mathf.Max(timeInSeconds - timer));
+
+            if (timeInSeconds - timer <= 0)
+            {
+                if (currentScore >= targetScore)
+                {
+                    GameWin();
+                }
+                else
+                {
+                    GameLose();
+                }
+
+                timeOut = true;
+            }
+        }
+    }
 }
