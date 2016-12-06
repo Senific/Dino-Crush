@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+#if  UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.SceneManagement;
 
 public class MainMenuPage : MonoBehaviour
@@ -21,7 +23,7 @@ public class MainMenuPage : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("LevelSelect");
+        SceneManager.LoadScene("Level1");
     }
 
     public void ToggleMute(Button button)
@@ -33,8 +35,8 @@ public class MainMenuPage : MonoBehaviour
     {
         Application.OpenURL(url);
     }
-     
-  
+
+
 
 
     public void Exit()

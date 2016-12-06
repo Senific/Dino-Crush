@@ -17,20 +17,16 @@ public class LevelMoves : Level
         hud.SetLevelID(levelID);
         hud.SetLevelType(type); 
         hud.SetScore(currentScore); 
-        hud.SetMovesRemaining(numMoves);
+     //   hud.SetMovesRemaining(numMoves);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 
     public override void OnMove()
     {
         movesUsed++;
 
-        hud.SetMovesRemaining(numMoves - movesUsed);
+      //  hud.SetMovesRemaining(numMoves - movesUsed);
 
         if (numMoves - movesUsed == 0)
         {

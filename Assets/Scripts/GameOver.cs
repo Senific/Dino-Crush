@@ -9,9 +9,12 @@ public class GameOver : MonoBehaviour
     public UnityEngine.UI.Text scoreText;
     public UnityEngine.UI.Text timeElapsedText;
     public UnityEngine.UI.Text movesText;
+    public UnityEngine.UI.Button nextButton;
+
     public UnityEngine.UI.Image[] stars;
 
 
+    private int levelID;
 
     // Use this for initialization
     void Start()
@@ -19,21 +22,13 @@ public class GameOver : MonoBehaviour
         winScreen.SetActive(false);
 
         for (int i = 0; i < stars.Length; i++)
-        {
             stars[i].enabled = false;
-        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void ShowLose()
     {
-        //screenParent.SetActive(true);
-        //scoreParent.SetActive(false);
+        failScreen.SetActive(true);
 
         Animator animator = GetComponent<Animator>();
 
@@ -43,15 +38,17 @@ public class GameOver : MonoBehaviour
         }
     }
 
-    public void ShowWin(int score, int starCount, float timeElapsed, int moves)
+    public void ShowWin(int score, int starCount, float timeElapsed, int moves, int levelID)
     {
+        this.levelID = levelID;
         winScreen.SetActive(true);
-
-        Debug.Log(starCount);
 
         timeElapsedText.text = string.Format("{0}:{1:00}", timeElapsed / 60, timeElapsed % 60);
         scoreText.text = score.ToString();
         movesText.text = moves.ToString();
+
+        nextButton.interactable = levelID < Level.NUMBER_OF_LEVELS;
+
 
         Animator animator = GetComponent<Animator>();
 
@@ -73,7 +70,6 @@ public class GameOver : MonoBehaviour
             for (int i = 0; i < starCount; i++)
             {
                 stars[i].enabled = true;
-                Debug.Log(i);
                 yield return new WaitForSeconds(0.5f);
             }
         }
@@ -90,7 +86,10 @@ public class GameOver : MonoBehaviour
     }
     public void OnNext()
     {
+        Debug.LogWarning("Not implemented!");
+        return;
 
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level" + (levelID + 1));
     }
 
     public void OpenWebsite(string url)

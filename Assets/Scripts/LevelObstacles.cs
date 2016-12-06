@@ -22,20 +22,16 @@ public class LevelObstacles : Level
 
         hud.SetLevelType(type);
         hud.SetScore(currentScore);
-        hud.SetObstacleRemaining(numMoves);
+    //    hud.SetObstacleRemaining(numMoves);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+ 
 
     public override void OnMove()
     {
         movesUsed++;
 
-        hud.SetObstacleRemaining(numMoves - movesUsed);
+   //     hud.SetObstacleRemaining(numMoves - movesUsed);
 
         if (numMoves - movesUsed == 0 && numObstaclesLeft > 0)
         {
@@ -52,7 +48,7 @@ public class LevelObstacles : Level
             if (obstacleTypes[i] == piece.Type)
             {
                 numObstaclesLeft--;
-                hud.SetObstacleRemaining(numObstaclesLeft);
+             //   hud.SetObstacleRemaining(numObstaclesLeft);
 
                 if (numObstaclesLeft == 0)
                 {

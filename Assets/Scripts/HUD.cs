@@ -8,22 +8,11 @@ public class HUD : MonoBehaviour
 
     public Level level;
     public GameOver gameOver;
+    public PauseMenu pauseMenu;
 
-    public UnityEngine.UI.Text remainingText;
-    public UnityEngine.UI.Text remainingSubtext;
-    public UnityEngine.UI.Text targetText;
-    public UnityEngine.UI.Text targetSubtext;
-    public UnityEngine.UI.Text scoreText;
-    public UnityEngine.UI.Image[] stars;
-
-    public UnityEngine.UI.Text movesRemainingText;
-    public UnityEngine.UI.Text timeRemainingText;
-    public UnityEngine.UI.Text obstacleRemainingText;
-    public UnityEngine.UI.Text leveText;
-
-    public GameObject timePanel;
-    public GameObject obstaclesPanel;
-    public GameObject movesPanel;
+    public Text TimeRemainingText;
+    public Text ScoreText;
+    public Image[] Stars;
 
     private int score;
     private int obstacleRemaining;
@@ -39,17 +28,6 @@ public class HUD : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < stars.Length; i++)
-        {
-            if (i == starIdx)
-            {
-                stars[i].enabled = true;
-            }
-            else
-            {
-                stars[i].enabled = false;
-            }
-        }
     }
 
     // Update is called once per frame
@@ -61,7 +39,7 @@ public class HUD : MonoBehaviour
     public void SetScore(int score)
     {
         this.score = score;
-        scoreText.text = score.ToString();
+        ScoreText.text = score.ToString();
 
 
         int visibleStar = 0;
@@ -79,16 +57,11 @@ public class HUD : MonoBehaviour
             visibleStar = 3;
         }
 
-        for (int i = 0; i < stars.Length; i++)
+
+        for (int i = 0; i < visibleStar; i++)
         {
-            if (i == visibleStar)
-            {
-                stars[i].enabled = true;
-            }
-            else
-            {
-                stars[i].enabled = false;
-            }
+            Debug.Log(i);
+            Stars[i].enabled = true;
         }
 
         starIdx = visibleStar;
@@ -97,69 +70,26 @@ public class HUD : MonoBehaviour
 
 
 
-    public void SetMovesRemaining(int remaining)
-    {
-        this.movesRemaining = remaining;
-        movesRemainingText.text = remaining.ToString();
-    }
-    public void SetObstacleRemaining(int remaining)
-    {
-        this.obstacleRemaining = remaining;
-        obstacleRemainingText.text = remaining.ToString();
-    }
     public void SetTimeRemaining(int remaining)
     {
         this.timeTemaining = remaining;
-        timeRemainingText.text = string.Format("{0}:{1:00}", remaining / 60, remaining % 60);
+        TimeRemainingText.text = string.Format("{0}:{1:00}", remaining / 60, remaining % 60);
     }
 
     public void SetLevelID(int id)
     {
         levelID = id;
-        leveText.text = string.Format("{0}/{1}", id, Level.NUMBER_OF_LEVELS);
     }
 
 
     public void SetLevelType(Level.LevelType type)
     {
         levelType = type;
-
-
-        timePanel.SetActive(false);
-        movesPanel.SetActive(false);
-        obstaclesPanel.SetActive(false);
-
-        if (levelType == Level.LevelType.MOVES)
-        {
-            movesPanel.SetActive(true);
-        }
-        else if (levelType == Level.LevelType.OBSTACLE)
-        {
-            movesPanel.SetActive(true);
-            obstaclesPanel.SetActive(true);
-        }
-
-
-        //if (type == Level.LevelType.MOVES)
-        //{
-        //    remainingSubtext.text = "moves remaining";
-        //    targetSubtext.text = "target score";
-        //}
-        //else if (type == Level.LevelType.OBSTACLE)
-        //{
-        //    remainingSubtext.text = "moves remaining";
-        //    targetSubtext.text = "bubbles remaining";
-        //}
-        //else if (type == Level.LevelType.TIMER)
-        //{
-        //    remainingSubtext.text = "time remaining";
-        //    targetSubtext.text = "target score";
-        //}
     }
 
     public void OnGameWin(int score, float timeElapsed, int totalMoves)
     {
-        gameOver.ShowWin(score, starIdx, timeElapsed, totalMoves);
+        gameOver.ShowWin(score, starIdx, timeElapsed, totalMoves, levelID);
         if (starIdx > PlayerPrefs.GetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, 0))
         {
             PlayerPrefs.SetInt(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, starIdx);
@@ -195,6 +125,7 @@ public class HUD : MonoBehaviour
 
     public void Pause()
     {
-
+        Time.timeScale = 0;
+        pauseMenu.Show();
     }
 }
